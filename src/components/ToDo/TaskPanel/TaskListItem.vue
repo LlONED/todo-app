@@ -35,7 +35,7 @@ const { name, description, done } = defineProps({
       </BaseButton>
     </div>
 
-    <p v-html="description"></p>
+    <p v-html="description" class="task-description"></p>
   </li>
 </template>
 
@@ -76,6 +76,10 @@ const { name, description, done } = defineProps({
   height: 30px;
   border-radius: 4px;
   border: 1px solid var(--color-border);
+}
+
+.task-description {
+  overflow-wrap: break-word;
 }
 
 .done {
