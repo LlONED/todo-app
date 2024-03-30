@@ -7,7 +7,7 @@ const tasksStore = useTasksStore();
 </script>
 
 <template>
-  <ul>
+  <ul class="task-list">
     <TaskListItem
       v-for="task in tasksStore.filteredTasks"
       :key="task.id"
@@ -20,4 +20,11 @@ const tasksStore = useTasksStore();
   </ul>
 </template>
 
-<style scoped></style>
+<style scoped>
+.task-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+</style>
