@@ -15,6 +15,12 @@ function submit() {
   tasksStore.addTask(form.name, form.description.replace(/\n/g, "<br/>"));
   Object.assign(form, initialFormState);
 }
+
+onBeforeMount(() => {
+  form.name = 'Нажать на кнопку "Добавить задачу"';
+  form.description =
+    "Использовать tab и shift tab для перемещения по элементам";
+});
 </script>
 
 <template>
