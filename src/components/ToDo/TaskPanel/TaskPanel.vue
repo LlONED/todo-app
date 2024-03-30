@@ -4,9 +4,9 @@ import TaskFilter from "./TaskFilter.vue";
 </script>
 
 <template>
-  <section>
-    <div>
-      <h3>Задачи</h3>
+  <section class="panel">
+    <div class="options">
+      <h3 class="title">Задачи</h3>
 
       <TaskFilter />
     </div>
@@ -15,4 +15,29 @@ import TaskFilter from "./TaskFilter.vue";
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.panel {
+  width: 100%;
+  margin-top: 52px;
+  padding: 12px;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  background-color: var(--vt-c-black);
+}
+
+.options {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  color: var(--green-mute);
+}
+</style>
