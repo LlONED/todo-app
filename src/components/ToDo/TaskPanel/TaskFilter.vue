@@ -10,8 +10,8 @@ watch(filter, (v) => tasksStore.updateFilter(v));
 </script>
 
 <template>
-  <div>
-    <input
+  <div class="filter">
+    <BaseInputRadio
       v-for="(filterName, index) in tasksFilterEnum"
       :key="index"
       :value="filterName"
@@ -22,4 +22,22 @@ watch(filter, (v) => tasksStore.updateFilter(v));
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.filter {
+  padding: 8px;
+  border-radius: 4px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background-color: var(--vt-c-black-mute);
+
+  outline: 1px solid var(--color-border);
+  transition: 0.1s outline ease;
+}
+
+.filter:focus-within {
+  outline: 2px solid var(--color-border-hover);
+  transition: 0.1s outline ease;
+}
+</style>
