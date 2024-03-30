@@ -9,6 +9,7 @@ const { modelValue } = defineProps({
   <textarea
     @input="emit('update:modelValue', $event.target.value)"
     :value="modelValue"
+    class="text-field"
   ></textarea>
 </template>
 

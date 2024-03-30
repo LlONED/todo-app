@@ -18,24 +18,54 @@ function submit() {
 </script>
 
 <template>
-  <form @submit.prevent="submit">
-    <div>
-      <input
+  <form @submit.prevent="submit" class="form">
+    <div class="fields-wrapper">
+      <BaseInputText
         v-model="form.name"
-        type="text"
         name="name"
         placeholder="Введите название задачи"
       />
 
-      <textarea
+      <BaseTextarea
         v-model="form.description"
         name="description"
         placeholder="Введите описание задачи"
+        class="description"
       />
     </div>
 
-    <button :disabled="!isFormValid" type="submit">Добавить задачу</button>
+    <BaseButton :disabled="!isFormValid" success type="submit" class="submit">
+      Добавить задачу
+    </BaseButton>
   </form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.form {
+  background-color: var(--vt-c-black);
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.fields-wrapper {
+  padding: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.description {
+  resize: vertical;
+}
+
+.submit {
+  padding: 8px;
+}
+</style>
