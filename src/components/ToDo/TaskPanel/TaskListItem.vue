@@ -25,12 +25,12 @@ const { name, description, done } = defineProps({
       <BaseInputCheckbox
         @change="emit('updateDone', $event)"
         :checked="done"
-        class="checkbox"
+        class="task-checkbox"
       />
 
-      <h4>{{ name }}</h4>
+      <h4 class="task-name">{{ name }}</h4>
 
-      <BaseButton @click="emit('remove')" danger class="remove">
+      <BaseButton @click="emit('remove')" danger class="task-remove">
         <IconTrash height="20" class="trash-icon" />
       </BaseButton>
     </div>
@@ -61,20 +61,26 @@ const { name, description, done } = defineProps({
   justify-content: space-between;
 }
 
-.done {
-  opacity: 0.8;
-  text-decoration: line-through;
-  transition: 0.2s opacity ease;
+.task-name {
+  max-width: 70%;
+  overflow-wrap: break-word;
 }
 
-.checkbox {
+.task-checkbox {
   width: 28px;
   height: 28px;
 }
 
-.remove {
-  padding: 4px;
+.task-remove {
+  width: 30px;
+  height: 30px;
   border-radius: 4px;
   border: 1px solid var(--color-border);
+}
+
+.done {
+  opacity: 0.8;
+  text-decoration: line-through;
+  transition: 0.2s opacity ease;
 }
 </style>
