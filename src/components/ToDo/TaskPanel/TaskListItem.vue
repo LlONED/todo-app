@@ -1,4 +1,6 @@
 <script setup>
+import IconTrash from "@/components/icons/IconTrash.vue";
+
 const emit = defineEmits(["updateDone", "remove"]);
 
 const { name, description, done } = defineProps({
@@ -29,7 +31,7 @@ const { name, description, done } = defineProps({
       <h4>{{ name }}</h4>
 
       <BaseButton @click="emit('remove')" danger class="remove">
-        remove
+        <IconTrash height="20" class="trash-icon" />
       </BaseButton>
     </div>
 
