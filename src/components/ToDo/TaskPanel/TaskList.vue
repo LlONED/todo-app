@@ -15,6 +15,8 @@ const tasksStore = useTasksStore();
       :name="task.name"
       :description="task.description"
       :done="task.done"
+      @updateDone="tasksStore.updateTaskDone(task.id, $event)"
+      @remove="tasksStore.removeTask(task.id)"
     />
   </ul>
   <p
