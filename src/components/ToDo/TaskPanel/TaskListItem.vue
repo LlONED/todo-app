@@ -18,21 +18,61 @@ const { name, description, done } = defineProps({
 </script>
 
 <template>
-  <li>
-    <div>
-      <input
-        @change="emit('updateDone', $event.target.checked)"
+  <li :class="['task', { done }]">
+    <div class="task-options">
+      <BaseInputCheckbox
+        @change="emit('updateDone', $event)"
         :checked="done"
-        type="checkbox"
+        class="checkbox"
       />
 
-      <h4>name</h4>
+      <h4>{{ name }}</h4>
 
-      <button @click="emit('remove')">remove</button>
+      <BaseButton @click="emit('remove')" danger class="remove">
+        remove
+      </BaseButton>
     </div>
 
-    <p>descriptions</p>
+    <p v-html="description"></p>
   </li>
 </template>
 
-<style scoped></style>
+<style scoped>
+.task {
+  opacity: 1;
+  list-style: none;
+  width: 100%;
+
+  padding: 12px;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  background-color: var(--vt-c-black-mute);
+  transition: 0.2s opacity ease;
+}
+
+.task-options {
+  display: flex;
+  justify-content: space-between;
+}
+
+.done {
+  opacity: 0.8;
+  text-decoration: line-through;
+  transition: 0.2s opacity ease;
+}
+
+.checkbox {
+  width: 28px;
+  height: 28px;
+}
+
+.remove {
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+</style>
