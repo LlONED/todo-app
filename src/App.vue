@@ -1,5 +1,7 @@
-<script setup></script>
+<script setup>
+import TheToDoPanel from "@/components/ToDo/TheToDoPanel.vue";
+</script>
 
-<template></template>
-
-<style scoped></style>
+<template>
+  <TheToDoPanel />
+</template>
