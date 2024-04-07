@@ -10,19 +10,18 @@ const tasksStore = useTasksStore();
 <template>
   <ul v-if="tasksStore.filteredTasks.length" class="task-list">
     <TaskListItem
-      v-for="task in tasksStore.filteredTasks"
-      :key="task.id"
+      v-for="[id, task] in tasksStore.filteredTasks"
+      :key="id"
       :name="task.name"
       :description="task.description"
       :done="task.done"
-      @updateDone="tasksStore.updateTaskDone(task.id, $event)"
-      @remove="tasksStore.removeTask(task.id)"
+      @updateDone="tasksStore.updateTaskDone(id, $event)"
+      @remove="tasksStore.removeTask(id)"
     />
   </ul>
   <p
     v-else-if="
-      tasksStore.filter === tasksFilterEnum.FINISHED &&
-      tasksStore.list.length > 0
+      tasksStore.filter === tasksFilterEnum.FINISHED && tasksStore.list.size > 0
     "
   >
     Выполненных заданий нет (′⌒`)
@@ -30,7 +29,7 @@ const tasksStore = useTasksStore();
   <p
     v-else-if="
       tasksStore.filter === tasksFilterEnum.UNFINISHED &&
-      tasksStore.list.length > 0
+      tasksStore.list.size > 0
     "
   >
     Все задания выполнены \(@^0^@)/

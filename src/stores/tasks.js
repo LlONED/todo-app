@@ -3,16 +3,16 @@ import { defineStore } from "pinia";
 
 export const useTasksStore = defineStore("tasks", {
   state: () => ({
-    /** @type {{ id: number, name: string, description: string, done: boolean }[]} */
-    list: [],
+    /** @type {Map<number, { name: string, description: string, done: boolean }>} */
+    list: new Map(),
     /** @type {tasksFilterEnum} */
     filter: tasksFilterEnum.ALL,
     incId: 0,
   }),
   getters: {
     filteredTasks(state) {
-      return state.list.filter(
-        (task) =>
+      return Array.from(state.list).filter(
+        ([id, task]) =>
           state.filter === tasksFilterEnum.ALL ||
           (state.filter === tasksFilterEnum.FINISHED && task.done) ||
           (state.filter === tasksFilterEnum.UNFINISHED && !task.done)
@@ -26,8 +26,7 @@ export const useTasksStore = defineStore("tasks", {
      * @param {string} description
      */
     addTask(name, description) {
-      this.list.push({
-        id: this.incId++,
+      this.list.set(this.incId++, {
         done: false,
         name,
         description,
@@ -39,7 +38,7 @@ export const useTasksStore = defineStore("tasks", {
      * @param {boolean} done
      */
     updateTaskDone(id, done) {
-      const task = this.list.find((task) => task.id === id);
+      const task = this.list.get(id);
 
       if (task === undefined) {
         throw new Error(`Task ${id} not found`);
@@ -59,13 +58,7 @@ export const useTasksStore = defineStore("tasks", {
      * @param {number} id
      */
     removeTask(id) {
-      const taskIndex = this.list.findIndex((task) => task.id === id);
-
-      if (taskIndex === -1) {
-        throw new Error(`Task ${id} not found`);
-      }
-
-      this.list.splice(taskIndex, 1);
+      this.list.delete(id);
     },
   },
 });
