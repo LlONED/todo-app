@@ -1,9 +1,17 @@
 <script setup>
+import { ref } from "vue";
+
 import IconTrash from "@/components/icons/IconTrash.vue";
+import { useTasksStore } from "@/stores/tasks.js";
+import { deleteTask, updateTask } from "@/api";
 
 const emit = defineEmits(["updateDone", "remove"]);
 
-const { name, description, done } = defineProps({
+const { id, name, description, done } = defineProps({
+  id: {
+    type: Number,
+    requried: true,
+  },
   name: {
     type: String,
     requried: true,
@@ -17,20 +25,61 @@ const { name, description, done } = defineProps({
     requried: true,
   },
 });
+
+const tasksStore = useTasksStore();
+
+const loading = ref(false);
+
+function remove() {
+  loading.value = true;
+
+  deleteTask(id)
+    .then((deletedId) => {
+      tasksStore.removeTask(deletedId);
+    })
+    .catch((e) => alert(e))
+    .finally(() => {
+      loading.value = false;
+    });
+}
+
+function updateDone(taskDone) {
+  loading.value = true;
+
+  updateTask(id, {
+    done: taskDone,
+  })
+    .then((updatedId) => {
+      tasksStore.updateTaskDone(updatedId, taskDone);
+    })
+    .catch((e) => {
+      tasksStore.updateTaskDone(id, !taskDone);
+      alert(e);
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+}
 </script>
 
 <template>
-  <li :class="['task', { done }]">
+  <li :class="['task', { done, loading }]">
     <div class="task-options">
       <BaseInputCheckbox
-        @change="emit('updateDone', $event)"
+        @change="updateDone"
         :checked="done"
+        :disabled="loading"
         class="task-checkbox"
       />
 
       <h4 class="task-name">{{ name }}</h4>
 
-      <BaseButton @click="emit('remove')" danger class="task-remove">
+      <BaseButton
+        @click="remove"
+        :disabled="loading"
+        danger
+        class="task-remove"
+      >
         <IconTrash height="20" class="trash-icon" />
       </BaseButton>
     </div>
@@ -72,10 +121,14 @@ const { name, description, done } = defineProps({
 }
 
 .task-remove {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 4px;
   border: 1px solid var(--color-border);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .task-description {
@@ -85,6 +138,12 @@ const { name, description, done } = defineProps({
 .done {
   opacity: 0.8;
   text-decoration: line-through;
+  transition: 0.2s opacity ease;
+}
+
+.loading {
+  pointer-events: none;
+  opacity: 0.5;
   transition: 0.2s opacity ease;
 }
 </style>

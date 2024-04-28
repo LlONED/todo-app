@@ -35,6 +35,8 @@ import TaskFilter from "./TaskFilter.vue";
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+
+  gap: 12px;
 }
 
 .title {
