@@ -1,6 +1,8 @@
 <script setup>
-import { computed, reactive, onBeforeMount } from "vue";
+import { computed, reactive, ref, onBeforeMount, triggerRef } from "vue";
 import { useTasksStore } from "@/stores/tasks.js";
+
+import { addTask } from "@/api";
 
 const tasksStore = useTasksStore();
 
@@ -11,9 +13,34 @@ const initialFormState = {
 const form = reactive({ ...initialFormState });
 const isFormValid = computed(() => form.name.length && form.description.length);
 
+const loading = ref(false);
+
 function submit() {
-  tasksStore.addTask(form.name, form.description.replace(/\n/g, "<br/>"));
-  Object.assign(form, initialFormState);
+  loading.value = true;
+
+  addTask({
+    name: form.name,
+    description: form.description,
+    done: false,
+  })
+    .then((data) => {
+      for (const id in data) {
+        const task = data[id];
+
+        tasksStore.addTask(
+          Number(id),
+          task.name,
+          task.description.replace(/\n/g, "<br/>"),
+          task.done
+        );
+      }
+
+      Object.assign(form, initialFormState);
+    })
+    .catch((e) => alert(e))
+    .finally(() => {
+      loading.value = false;
+    });
 }
 
 onBeforeMount(() => {
@@ -28,19 +55,28 @@ onBeforeMount(() => {
     <div class="fields-wrapper">
       <BaseInputText
         v-model="form.name"
+        :disabled="loading"
         name="name"
         placeholder="Введите название задачи"
+        required
       />
 
       <BaseTextarea
         v-model="form.description"
+        :disabled="loading"
         name="description"
         placeholder="Введите описание задачи"
         class="description"
+        required
       />
     </div>
 
-    <BaseButton :disabled="!isFormValid" success type="submit" class="submit">
+    <BaseButton
+      :disabled="!isFormValid || loading"
+      success
+      type="submit"
+      class="submit"
+    >
       Добавить задачу
     </BaseButton>
   </form>
