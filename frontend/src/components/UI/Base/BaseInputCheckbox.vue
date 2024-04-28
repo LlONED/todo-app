@@ -1,15 +1,20 @@
 <script setup>
 const emit = defineEmits(["change"]);
-const { checked } = defineProps({
+const { disabled, checked } = defineProps({
   checked: Boolean,
+  disabled: Boolean,
 });
 </script>
 
 <template>
   <label class="label relative cursor-pointer">
     <input
-      @change="emit('change', $event.target.checked)"
+      @change="
+        emit('change', $event.target.checked);
+        $event.target.checked = !$event.target.checked;
+      "
       :checked="checked"
+      :disabled="disabled"
       type="checkbox"
       class="input"
     />
