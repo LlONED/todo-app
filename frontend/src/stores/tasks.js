@@ -7,9 +7,12 @@ export const useTasksStore = defineStore("tasks", {
     list: new Map(),
     /** @type {tasksFilterEnum} */
     filter: tasksFilterEnum.ALL,
-    incId: 0,
   }),
   getters: {
+    size(state) {
+      return state.list.size;
+    },
+
     filteredTasks(state) {
       return Array.from(state.list).filter(
         ([id, task]) =>
@@ -22,14 +25,16 @@ export const useTasksStore = defineStore("tasks", {
 
   actions: {
     /**
+     * @param {number} id
      * @param {string} name
      * @param {string} description
+     * @param {boolean} done
      */
-    addTask(name, description) {
-      this.list.set(this.incId++, {
-        done: false,
+    addTask(id, name, description, done) {
+      this.list.set(id, {
         name,
         description,
+        done,
       });
     },
 
